@@ -3,7 +3,7 @@ import express, { type Express } from 'express'
 import cors from 'cors'
 import { createServer, type Server } from 'http'
 import { env } from './config/env'
-import authRouter from './routes/auth'
+import authRouter from './routes/auth.routes'
 
 const app: Express = express()
 const httpServer: Server = createServer(app)

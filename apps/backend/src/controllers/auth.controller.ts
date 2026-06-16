@@ -1,4 +1,4 @@
-import { Router, type Request, type Response } from 'express'
+import { type Request, type Response } from 'express'
 import bcrypt from 'bcryptjs'
 import { eq } from 'drizzle-orm'
 import { db } from '../config/db'
@@ -7,10 +7,8 @@ import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../lib/jw
 import { registerSchema, loginSchema, refreshSchema } from '../schemas/auth'
 import type { ApiResponse } from '../types'
 
-const router = Router()
 
-// ─── POST /auth/register ──────────────────────────────────────────────────────
-router.post('/register', async (req: Request, res: Response) => {
+export async function register(req: Request, res: Response): Promise<void> {
   const parsed = registerSchema.safeParse(req.body)
   if (!parsed.success) {
     res.status(400).json({ success: false, error: 'Données invalides', details: parsed.error.flatten() })
@@ -40,10 +38,9 @@ router.post('/register', async (req: Request, res: Response) => {
     message: 'Compte créé avec succès',
   }
   res.status(201).json(response)
-})
+}
 
-// ─── POST /auth/login ─────────────────────────────────────────────────────────
-router.post('/login', async (req: Request, res: Response) => {
+export async function login(req: Request, res: Response): Promise<void> {
   const parsed = loginSchema.safeParse(req.body)
   if (!parsed.success) {
     res.status(400).json({ success: false, error: 'Données invalides', details: parsed.error.flatten() })
@@ -67,23 +64,14 @@ router.post('/login', async (req: Request, res: Response) => {
   const accessToken = signAccessToken({ sub: user.id, email: user.email, role: user.role })
   const refreshToken = signRefreshToken(user.id)
 
-  const response: ApiResponse<{
-    user: { id: string; name: string; email: string; role: string }
-    accessToken: string
-    refreshToken: string
-  }> = {
+  const response: ApiResponse<{ user: { id: string; name: string; email: string; role: string }; accessToken: string; refreshToken: string }> = {
     success: true,
-    data: {
-      user: { id: user.id, name: user.name, email: user.email, role: user.role },
-      accessToken,
-      refreshToken,
-    },
+    data: { user: { id: user.id, name: user.name, email: user.email, role: user.role }, accessToken, refreshToken },
   }
   res.json(response)
-})
+}
 
-// ─── POST /auth/refresh ───────────────────────────────────────────────────────
-router.post('/refresh', async (req: Request, res: Response) => {
+export async function refresh(req: Request, res: Response): Promise<void> {
   const parsed = refreshSchema.safeParse(req.body)
   if (!parsed.success) {
     res.status(400).json({ success: false, error: 'refreshToken manquant' })
@@ -105,19 +93,12 @@ router.post('/refresh', async (req: Request, res: Response) => {
   }
 
   const accessToken = signAccessToken({ sub: user.id, email: user.email, role: user.role })
-  const newRefreshToken = signRefreshToken(user.id)
+  const refreshToken = signRefreshToken(user.id)
 
-  res.json({
-    success: true,
-    data: { accessToken, refreshToken: newRefreshToken },
-  })
-})
+  res.json({ success: true, data: { accessToken, refreshToken } })
+}
 
-// ─── POST /auth/logout ────────────────────────────────────────────────────────
-router.post('/logout', (_req: Request, res: Response) => {
-  // Les tokens JWT sont stateless — la révocation est gérée côté client
-  // (suppression du token du localStorage/memory)
+export function logout(_req: Request, res: Response): void {
+  // Tokens JWT stateless — révocation gérée côté client
   res.json({ success: true, message: 'Déconnexion réussie' })
-})
-
-export default router
+}

@@ -5,13 +5,13 @@ export const registerSchema = z.object({
   email: z.string().email(),
   password: z
     .string()
-    .min(8, 'Le mot de passe doit contenir au moins 8 caractères')
-    .max(72, 'Le mot de passe ne peut pas dépasser 72 caractères'),
+    .min(6, 'Le mot de passe doit contenir au moins 6 caractères')
+    .max(72, 'Le mot de passe ne peut pas dépasser 72 caractères'), // Pour bcrypt, le mot de passe ne peut pas dépasser 72 caractères
 })
 
 export const loginSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(1),
+  password: z.string().min(6, 'Le mot de passe doit contenir au moins 6 caractères'),
 })
 
 export const refreshSchema = z.object({
