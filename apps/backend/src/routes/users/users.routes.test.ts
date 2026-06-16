@@ -22,8 +22,7 @@ const authHeader = { Authorization: `Bearer ${validToken}` }
 
 beforeEach(() => vi.clearAllMocks())
 
-// ─── GET /users/me ────────────────────────────────────────────────────────────
-describe('GET /users/me', () => {
+describe('GET /users/user', () => {
   it('retourne le profil de l\'utilisateur connecté (200)', async () => {
     mockDb.query.users.findFirst.mockResolvedValue({
       id: 'uuid-1', name: 'Alice', email: 'alice@test.com',
@@ -31,7 +30,7 @@ describe('GET /users/me', () => {
       createdAt: new Date(), updatedAt: new Date(),
     })
 
-    const res = await request(app).get('/users/me').set(authHeader)
+    const res = await request(app).get('/users/user').set(authHeader)
 
     expect(res.status).toBe(200)
     expect(res.body.data.email).toBe('alice@test.com')
@@ -40,13 +39,12 @@ describe('GET /users/me', () => {
   })
 
   it('retourne 401 sans token', async () => {
-    const res = await request(app).get('/users/me')
+    const res = await request(app).get('/users/user')
     expect(res.status).toBe(401)
   })
 })
 
-// ─── PATCH /users/me ──────────────────────────────────────────────────────────
-describe('PATCH /users/me', () => {
+describe('PATCH /users/user', () => {
   it('met à jour le profil (200)', async () => {
     const returning = vi.fn().mockResolvedValue([{
       id: 'uuid-1', name: 'Alice Modifiée', email: 'alice@test.com', role: 'user',
@@ -56,7 +54,7 @@ describe('PATCH /users/me', () => {
     mockDb.update.mockReturnValue({ set })
 
     const res = await request(app)
-      .patch('/users/me')
+      .patch('/users/user')
       .set(authHeader)
       .send({ name: 'Alice Modifiée' })
 
@@ -66,7 +64,7 @@ describe('PATCH /users/me', () => {
 
   it('retourne 400 si le nom est trop court', async () => {
     const res = await request(app)
-      .patch('/users/me')
+      .patch('/users/user')
       .set(authHeader)
       .send({ name: 'A' })
 
@@ -74,7 +72,7 @@ describe('PATCH /users/me', () => {
   })
 
   it('retourne 401 sans token', async () => {
-    const res = await request(app).patch('/users/me').send({ name: 'Alice' })
+    const res = await request(app).patch('/users/user').send({ name: 'Alice' })
     expect(res.status).toBe(401)
   })
 })

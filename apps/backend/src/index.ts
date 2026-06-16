@@ -6,6 +6,8 @@ import { env } from './config/env'
 import passport from './config/passport'
 import authRouter from './routes/auth/auth.routes'
 import usersRouter from './routes/users/users.routes'
+import eventsRouter from './routes/events/events.routes'
+import bookingsRouter from './routes/bookings/bookings.routes'
 import { errorHandler } from './middleware'
 
 const app: Express = express()
@@ -23,6 +25,8 @@ app.get('/health', (_req, res) => {
 // ROUTES
 app.use('/auth', authRouter)
 app.use('/users', usersRouter)
+app.use('/events', eventsRouter)
+app.use('/bookings', bookingsRouter)
 
 // ERROR HANDLER
 app.use(errorHandler)
