@@ -5,6 +5,7 @@ import { createServer, type Server } from 'http'
 import { env } from './config/env'
 import passport from './config/passport'
 import authRouter from './routes/auth/auth.routes'
+import usersRouter from './routes/users/users.routes'
 import { errorHandler } from './middleware'
 
 const app: Express = express()
@@ -15,15 +16,15 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(passport.initialize())
 
-// ─── Health check ─────────────────────────────────────────────────────────────
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })
 })
 
-// ─── Routes ───────────────────────────────────────────────────────────────────
+// ROUTES
 app.use('/auth', authRouter)
+app.use('/users', usersRouter)
 
-// ─── Error handler (doit être APRÈS toutes les routes) ────────────────────────
+// ERROR HANDLER
 app.use(errorHandler)
 
 httpServer.listen(env.PORT, () => {
