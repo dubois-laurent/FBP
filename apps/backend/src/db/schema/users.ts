@@ -17,7 +17,7 @@ export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
   name: varchar('name', { length: 255 }).notNull(),
   email: varchar('email', { length: 255 }).notNull().unique(),
-  password: varchar('password', { length: 255 }), // nullable pour les utilisateurs qui se connectent via Google OAuth !!
+  password: varchar('password', { length: 60 }), // bcrypt output = toujours 60 charactères peu importe l'input (merci Dany). Nullable pour les utilisateurs Google OAuth
   role: roleEnum('role').notNull().default('user'),
   googleId: varchar('google_id', { length: 255 }).unique(),
   createdAt: timestamp('created_at').notNull().defaultNow(),

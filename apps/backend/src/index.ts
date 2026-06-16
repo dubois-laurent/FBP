@@ -1,7 +1,6 @@
 import 'dotenv/config'
 import express, { type Express } from 'express'
 import cors from 'cors'
-import helmet from 'helmet'
 import { createServer, type Server } from 'http'
 import { env } from './config/env'
 

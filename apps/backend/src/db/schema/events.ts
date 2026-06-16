@@ -18,7 +18,7 @@ export const eventTypeEnum = pgEnum('event_type', [
   'rencontre',
 ])
 
-// Table "events" => table "bookings" (relation N:1)
+// Table "events" => table "bookings" (relation 1:N)
 export const events = pgTable('events', {
   id: uuid('id').primaryKey().defaultRandom(),
   title: varchar('title', { length: 255 }).notNull(),

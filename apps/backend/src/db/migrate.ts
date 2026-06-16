@@ -5,7 +5,7 @@ import { Pool } from 'pg'
 import { env } from '../config/env'
 
 async function runMigrations() {
-  console.log('⏳ Running migrations...')
+  console.log('Migration started')
 
   const pool = new Pool({ connectionString: env.DATABASE_URL })
   const db = drizzle(pool)
@@ -13,10 +13,10 @@ async function runMigrations() {
   await migrate(db, { migrationsFolder: './src/db/migrations' })
 
   await pool.end()
-  console.log('✅ Migrations completed successfully')
+  console.log('Migrations completed let\'s goooooooo')
 }
 
 runMigrations().catch((err) => {
-  console.error('❌ Migration failed:', err)
+  console.error('Migration failed:', err)
   process.exit(1)
 })
