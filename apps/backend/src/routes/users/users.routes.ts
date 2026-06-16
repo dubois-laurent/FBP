@@ -6,6 +6,6 @@ import { asyncHandler } from '../../lib/asyncHandler'
 const router: Router = Router()
 
 router.get('/user', authenticate, asyncHandler(getOneUser))
-router.put('/user', authenticate, asyncHandler(putOneUser))
+router.patch('/user', authenticate, asyncHandler(putOneUser))
 
 export default router
