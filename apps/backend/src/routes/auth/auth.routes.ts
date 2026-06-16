@@ -2,16 +2,15 @@ import { Router } from 'express'
 import passport from '../../config/passport'
 import { register, login, refresh, logout } from '../../controllers/auth.controller'
 import { googleCallback, googleFailure } from '../../controllers/google.controller'
+import { asyncHandler } from '../../lib/asyncHandler'
 
 const router: Router = Router()
 
-// ─── JWT auth ─────────────────────────────────────────────────────────────────
-router.post('/register', register)
-router.post('/login', login)
-router.post('/refresh', refresh)
+router.post('/register', asyncHandler(register))
+router.post('/login', asyncHandler(login))
+router.post('/refresh', asyncHandler(refresh))
 router.post('/logout', logout)
 
-// ─── Google OAuth2 ────────────────────────────────────────────────────────────
 router.get(
   '/google',
   passport.authenticate('google', { scope: ['profile', 'email'], session: false }),

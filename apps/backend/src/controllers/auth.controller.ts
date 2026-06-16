@@ -10,20 +10,12 @@ export async function register(req: Request, res: Response): Promise<void> {
     res.status(400).json({ success: false, error: 'Données invalides', details: parsed.error.flatten() })
     return
   }
-  try {
-    const user = await createUser(parsed.data)
-    const accessToken = signAccessToken({ sub: user.id, email: user.email, role: user.role })
-    const refreshToken = signRefreshToken(user.id)
-    const response: ApiResponse = { success: true, data: { user, accessToken, refreshToken }, message: 'Compte créé avec succès' }
-    res.status(201).json(response)
-  } catch (err) {
-    const error = err as NodeJS.ErrnoException
-    if (error.code === 'EMAIL_TAKEN') {
-      res.status(409).json({ success: false, error: error.message })
-    } else {
-      throw err
-    }
-  }
+  // AppError (ex: conflict 409) propagé via asyncHandler → errorHandler
+  const user = await createUser(parsed.data)
+  const accessToken = signAccessToken({ sub: user.id, email: user.email, role: user.role })
+  const refreshToken = signRefreshToken(user.id)
+  const response: ApiResponse = { success: true, data: { user, accessToken, refreshToken }, message: 'Compte créé avec succès' }
+  res.status(201).json(response)
 }
 
 export async function login(req: Request, res: Response): Promise<void> {

@@ -4,13 +4,13 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
-    setupFiles: ['./src/test/setup.ts'],
+    setupFiles: ['./src/__tests__/setup.ts'],
     include: ['src/**/*.test.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov'],
       include: ['src/**/*.ts'],
-      exclude: ['src/test/**', 'src/**/*.test.ts', 'src/db/migrations/**'],
+      exclude: ['src/__tests__/**', 'src/**/*.test.ts', 'src/db/migrations/**'],
     },
   },
 })

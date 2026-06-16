@@ -2,20 +2,16 @@ import bcrypt from 'bcryptjs'
 import { eq } from 'drizzle-orm'
 import { db } from '../../config/db'
 import { users } from '../../db/schema'
+import { AppError } from '../../lib/AppError'
 import type { RegisterInput, LoginInput } from '../../schemas/auth'
 import type { AuthUser } from '../../types/auth'
 
-// ─── Register ─────────────────────────────────────────────────────────────────
 
 export async function createUser(input: RegisterInput): Promise<{
   id: string; name: string; email: string; role: 'user' | 'admin'
 }> {
   const existing = await db.query.users.findFirst({ where: eq(users.email, input.email) })
-  if (existing) {
-    const err = new Error('Un compte avec cet email existe déjà')
-    ;(err as NodeJS.ErrnoException).code = 'EMAIL_TAKEN'
-    throw err
-  }
+  if (existing) throw AppError.conflict('Un compte avec cet email existe déjà')
 
   const hashedPassword = await bcrypt.hash(input.password, 12)
   const [user] = await db
@@ -26,7 +22,6 @@ export async function createUser(input: RegisterInput): Promise<{
   return user
 }
 
-// ─── Login ────────────────────────────────────────────────────────────────────
 
 export async function validateCredentials(
   input: LoginInput,
@@ -45,7 +40,6 @@ export async function validateCredentials(
   return { id: user.id, name: user.name, email: user.email, role: user.role }
 }
 
-// ─── Google OAuth (upsert) ────────────────────────────────────────────────────
 
 export async function findOrCreateGoogleUser(profile: {
   googleId: string
@@ -73,7 +67,6 @@ export async function findOrCreateGoogleUser(profile: {
   return { id: user.id, email: user.email, role: user.role }
 }
 
-// ─── Refresh ──────────────────────────────────────────────────────────────────
 
 export async function findUserById(id: string) {
   const user = await db.query.users.findFirst({ where: eq(users.id, id) })

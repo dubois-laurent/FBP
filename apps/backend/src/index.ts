@@ -5,6 +5,7 @@ import { createServer, type Server } from 'http'
 import { env } from './config/env'
 import passport from './config/passport'
 import authRouter from './routes/auth/auth.routes'
+import { errorHandler } from './middleware'
 
 const app: Express = express()
 const httpServer: Server = createServer(app)
@@ -21,6 +22,9 @@ app.get('/health', (_req, res) => {
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
 app.use('/auth', authRouter)
+
+// ─── Error handler (doit être APRÈS toutes les routes) ────────────────────────
+app.use(errorHandler)
 
 httpServer.listen(env.PORT, () => {
   console.log(`🚀 Server running on http://localhost:${env.PORT}`)

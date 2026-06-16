@@ -16,7 +16,6 @@ beforeEach(() => {
   vi.clearAllMocks()
 })
 
-// ─── createUser ───────────────────────────────────────────────────────────────
 describe('createUser', () => {
   it('crée et retourne un nouvel utilisateur', async () => {
     mockDb.query.users.findFirst.mockResolvedValue(null)
@@ -32,16 +31,15 @@ describe('createUser', () => {
     expect(result.role).toBe('user')
   })
 
-  it('lève EMAIL_TAKEN si l\'email est déjà pris', async () => {
+  it('lève AppError.conflict si l\'email est déjà pris', async () => {
     mockDb.query.users.findFirst.mockResolvedValue({ id: 'existing', email: 'alice@test.com' })
 
     await expect(
       createUser({ name: 'Alice', email: 'alice@test.com', password: 'password123' }),
-    ).rejects.toMatchObject({ code: 'EMAIL_TAKEN' })
+    ).rejects.toMatchObject({ statusCode: 409, code: 'CONFLICT' })
   })
 })
 
-// ─── validateCredentials ──────────────────────────────────────────────────────
 describe('validateCredentials', () => {
   it('retourne l\'utilisateur si les identifiants sont corrects', async () => {
     const bcrypt = await import('bcryptjs')
@@ -55,7 +53,7 @@ describe('validateCredentials', () => {
     expect(result.email).toBe('alice@test.com')
   })
 
-  it('lève une erreur si le mot de passe est incorrect', async () => {
+  it('Erreur si le mot de passe est incorrect', async () => {
     const bcrypt = await import('bcryptjs')
     const hashed = await bcrypt.hash('autrepassword', 12)
 
@@ -68,7 +66,7 @@ describe('validateCredentials', () => {
     ).rejects.toThrow('Email ou mot de passe incorrect')
   })
 
-  it('lève une erreur si l\'utilisateur n\'existe pas', async () => {
+  it('Erreur si l\'utilisateur n\'existe pas', async () => {
     mockDb.query.users.findFirst.mockResolvedValue(null)
 
     await expect(
@@ -77,7 +75,6 @@ describe('validateCredentials', () => {
   })
 })
 
-// ─── findOrCreateGoogleUser ───────────────────────────────────────────────────
 describe('findOrCreateGoogleUser', () => {
   const profile = { googleId: 'gid-123', email: 'alice@gmail.com', displayName: 'Alice Google' }
 
@@ -105,7 +102,6 @@ describe('findOrCreateGoogleUser', () => {
   })
 })
 
-// ─── findUserById ─────────────────────────────────────────────────────────────
 describe('findUserById', () => {
   it('retourne l\'utilisateur si trouvé', async () => {
     mockDb.query.users.findFirst.mockResolvedValue({ id: 'uuid-1', email: 'alice@test.com', role: 'user' })

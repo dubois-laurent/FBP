@@ -2,12 +2,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import request from 'supertest'
 import express from 'express'
 import authRouter from './auth.routes'
+import { errorHandler } from '../../middleware'
 import { db } from '../../config/db'
 
-// L'app de test est légère : pas de passport, pas de socket.io
 const app = express()
 app.use(express.json())
 app.use('/auth', authRouter)
+app.use(errorHandler) // indispensable pour que AppError → réponse JSON
 
 const mockDb = db as unknown as {
   query: { users: { findFirst: ReturnType<typeof vi.fn> } }
@@ -18,7 +19,6 @@ beforeEach(() => {
   vi.clearAllMocks()
 })
 
-// ─── POST /auth/register ──────────────────────────────────────────────────────
 describe('POST /auth/register', () => {
   it('crée un utilisateur et retourne les tokens (201)', async () => {
     mockDb.query.users.findFirst.mockResolvedValue(null) // pas de doublon
@@ -69,7 +69,6 @@ describe('POST /auth/register', () => {
   })
 })
 
-// ─── POST /auth/login ─────────────────────────────────────────────────────────
 describe('POST /auth/login', () => {
   it('retourne les tokens pour des identifiants valides (200)', async () => {
     const bcrypt = await import('bcryptjs')
@@ -127,7 +126,6 @@ describe('POST /auth/login', () => {
   })
 })
 
-// ─── POST /auth/refresh ───────────────────────────────────────────────────────
 describe('POST /auth/refresh', () => {
   it('retourne un nouveau accessToken avec un refreshToken valide', async () => {
     const { signRefreshToken } = await import('../../lib/jwt')
