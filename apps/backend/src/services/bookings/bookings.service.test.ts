@@ -28,7 +28,6 @@ const fakeBooking = {
 
 beforeEach(() => vi.clearAllMocks())
 
-// ─── createBooking ────────────────────────────────────────────────────────────
 describe('createBooking', () => {
   it('crée une réservation et décrémente les places', async () => {
     mockDb.query.events.findFirst.mockResolvedValue(fakeEvent)
@@ -64,7 +63,6 @@ describe('createBooking', () => {
   })
 })
 
-// ─── listUserBookings ─────────────────────────────────────────────────────────
 describe('listUserBookings', () => {
   it('retourne les réservations de l\'utilisateur', async () => {
     mockDb.query.bookings.findMany.mockResolvedValue([fakeBooking])
@@ -73,7 +71,6 @@ describe('listUserBookings', () => {
   })
 })
 
-// ─── cancelBooking ────────────────────────────────────────────────────────────
 describe('cancelBooking', () => {
   it('annule une réservation et remet la place', async () => {
     mockDb.query.bookings.findFirst.mockResolvedValueOnce(fakeBooking)
