@@ -58,7 +58,7 @@ describe('GET /events', () => {
 })
 
 describe('GET /events/:id', () => {
-  it("retourne l'événement (200)", async () => {
+  it('retourne l\'événement (200)', async () => {
     mockDb.query.events.findFirst.mockResolvedValue(fakeEvent)
     const res = await request(app).get('/events/uuid-evt-1')
     expect(res.status).toBe(200)
@@ -92,6 +92,7 @@ describe('POST /events', () => {
       .set('Authorization', `Bearer ${adminToken}`)
       .send(validBody)
     expect(res.status).toBe(201)
+    expect(res.body.data.title).toBe('Nouvelle expo')
   })
 
   it('retourne 403 pour un utilisateur non-admin', async () => {
@@ -111,7 +112,7 @@ describe('POST /events', () => {
     const res = await request(app)
       .post('/events')
       .set('Authorization', `Bearer ${adminToken}`)
-      .send({ title: 'X' })
+      .send({ title: 'X' }) // manque des champs requis
     expect(res.status).toBe(400)
   })
 })
@@ -129,6 +130,7 @@ describe('PATCH /events/:id', () => {
       .set('Authorization', `Bearer ${adminToken}`)
       .send({ title: 'Titre modifié' })
     expect(res.status).toBe(200)
+    expect(res.body.data.title).toBe('Titre modifié')
   })
 
   it('retourne 403 pour un utilisateur non-admin', async () => {
@@ -150,16 +152,17 @@ describe('DELETE /events/:id', () => {
       .delete('/events/uuid-evt-1')
       .set('Authorization', `Bearer ${adminToken}`)
     expect(res.status).toBe(200)
+    expect(res.body.message).toBe('Événement supprimé')
   })
 
-  it("retourne 403 pour un utilisateur non-admin", async () => {
+  it('retourne 403 pour un utilisateur non-admin', async () => {
     const res = await request(app)
       .delete('/events/uuid-evt-1')
       .set('Authorization', `Bearer ${userToken}`)
     expect(res.status).toBe(403)
   })
 
-  it("retourne 404 si l'événement n'existe pas", async () => {
+  it('retourne 404 si l\'événement n\'existe pas', async () => {
     mockDb.query.events.findFirst.mockResolvedValue(null)
     const res = await request(app)
       .delete('/events/uuid-fantome')

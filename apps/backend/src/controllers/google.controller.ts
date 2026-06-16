@@ -3,7 +3,6 @@ import { signAccessToken, signRefreshToken } from '../lib/jwt'
 import { env } from '../config/env'
 import type { AuthUser } from '../types/auth'
 
-// ─── GET /auth/google/callback ────────────────────────────────────────────────
 // Appelé par Passport après authentification Google réussie.
 // Génère les tokens JWT et redirige vers le frontend.
 export function googleCallback(req: Request, res: Response): void {
@@ -21,7 +20,6 @@ export function googleCallback(req: Request, res: Response): void {
   res.redirect(redirectUrl.toString())
 }
 
-// ─── GET /auth/google/failure ─────────────────────────────────────────────────
 export function googleFailure(_req: Request, res: Response): void {
   const redirectUrl = new URL('/login', env.FRONTEND_URL)
   redirectUrl.searchParams.set('error', 'google_auth_failed')

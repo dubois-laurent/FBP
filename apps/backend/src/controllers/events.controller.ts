@@ -6,7 +6,11 @@ import {
   updateEvent,
   deleteEvent,
 } from '../services/events/events.service'
-import { createEventSchema, updateEventSchema, eventsQuerySchema } from '../schemas/events'
+import {
+  createEventSchema,
+  updateEventSchema,
+  eventsQuerySchema,
+} from '../schemas/events'
 import { AppError } from '../lib/AppError'
 
 export async function listEventsHandler(req: Request, res: Response): Promise<void> {
