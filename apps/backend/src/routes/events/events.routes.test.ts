@@ -38,9 +38,8 @@ const fakeEvent = {
 
 beforeEach(() => vi.clearAllMocks())
 
-// ─── GET /events ──────────────────────────────────────────────────────────────
 describe('GET /events', () => {
-  it('retourne la liste des événements sans authentification (200)', async () => {
+  it('retourne la liste sans authentification (200)', async () => {
     mockDb.query.events.findMany.mockResolvedValue([fakeEvent])
     const whereFn = vi.fn().mockResolvedValue([{ count: 1 }])
     const fromFn = vi.fn().mockReturnValue({ where: whereFn })
@@ -58,7 +57,6 @@ describe('GET /events', () => {
   })
 })
 
-// ─── GET /events/:id ──────────────────────────────────────────────────────────
 describe('GET /events/:id', () => {
   it('retourne l\'événement (200)', async () => {
     mockDb.query.events.findFirst.mockResolvedValue(fakeEvent)
@@ -74,7 +72,6 @@ describe('GET /events/:id', () => {
   })
 })
 
-// ─── POST /events ─────────────────────────────────────────────────────────────
 describe('POST /events', () => {
   const validBody = {
     title: 'Nouvelle expo',
@@ -120,9 +117,8 @@ describe('POST /events', () => {
   })
 })
 
-// ─── PATCH /events/:id ────────────────────────────────────────────────────────
 describe('PATCH /events/:id', () => {
-  it('met à jour un événement si admin (200)', async () => {
+  it("met à jour un événement si admin (200)", async () => {
     mockDb.query.events.findFirst.mockResolvedValue(fakeEvent)
     const returning = vi.fn().mockResolvedValue([{ ...fakeEvent, title: 'Titre modifié' }])
     const where = vi.fn().mockReturnValue({ returning })
@@ -146,9 +142,8 @@ describe('PATCH /events/:id', () => {
   })
 })
 
-// ─── DELETE /events/:id ───────────────────────────────────────────────────────
 describe('DELETE /events/:id', () => {
-  it('supprime un événement si admin (200)', async () => {
+  it("supprime un événement si admin (200)", async () => {
     mockDb.query.events.findFirst.mockResolvedValue(fakeEvent)
     const where = vi.fn().mockResolvedValue(undefined)
     mockDb.delete.mockReturnValue({ where })

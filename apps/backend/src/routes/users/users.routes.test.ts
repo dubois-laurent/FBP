@@ -22,7 +22,6 @@ const authHeader = { Authorization: `Bearer ${validToken}` }
 
 beforeEach(() => vi.clearAllMocks())
 
-// ─── GET /users/me ────────────────────────────────────────────────────────────
 describe('GET /users/user', () => {
   it('retourne le profil de l\'utilisateur connecté (200)', async () => {
     mockDb.query.users.findFirst.mockResolvedValue({
@@ -45,8 +44,7 @@ describe('GET /users/user', () => {
   })
 })
 
-// ─── PATCH /users/me ──────────────────────────────────────────────────────────
-describe('PUT /users/user', () => {
+describe('PATCH /users/user', () => {
   it('met à jour le profil (200)', async () => {
     const returning = vi.fn().mockResolvedValue([{
       id: 'uuid-1', name: 'Alice Modifiée', email: 'alice@test.com', role: 'user',
@@ -56,7 +54,7 @@ describe('PUT /users/user', () => {
     mockDb.update.mockReturnValue({ set })
 
     const res = await request(app)
-      .put('/users/user')
+      .patch('/users/user')
       .set(authHeader)
       .send({ name: 'Alice Modifiée' })
 
@@ -66,7 +64,7 @@ describe('PUT /users/user', () => {
 
   it('retourne 400 si le nom est trop court', async () => {
     const res = await request(app)
-      .put('/users/user')
+      .patch('/users/user')
       .set(authHeader)
       .send({ name: 'A' })
 
@@ -74,7 +72,7 @@ describe('PUT /users/user', () => {
   })
 
   it('retourne 401 sans token', async () => {
-    const res = await request(app).put('/users/user').send({ name: 'Alice' })
+    const res = await request(app).patch('/users/user').send({ name: 'Alice' })
     expect(res.status).toBe(401)
   })
 })

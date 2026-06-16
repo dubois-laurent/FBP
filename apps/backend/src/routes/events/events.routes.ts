@@ -11,11 +11,8 @@ import {
 
 const router: Router = Router()
 
-// ─── Public ───────────────────────────────────────────────────────────────────
 router.get('/', asyncHandler(listEventsHandler))
 router.get('/:id', asyncHandler(getEventHandler))
-
-// ─── Admin only ───────────────────────────────────────────────────────────────
 router.post('/', authenticate, isAdmin, asyncHandler(createEventHandler))
 router.patch('/:id', authenticate, isAdmin, asyncHandler(updateEventHandler))
 router.delete('/:id', authenticate, isAdmin, asyncHandler(deleteEventHandler))

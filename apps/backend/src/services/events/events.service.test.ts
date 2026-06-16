@@ -26,11 +26,9 @@ const fakeEvent = {
 
 beforeEach(() => vi.clearAllMocks())
 
-// ─── listEvents ───────────────────────────────────────────────────────────────
 describe('listEvents', () => {
   it('retourne la liste paginée des événements', async () => {
     mockDb.query.events.findMany.mockResolvedValue([fakeEvent])
-    // mock db.select().from().where() chain
     const whereFn = vi.fn().mockResolvedValue([{ count: 1 }])
     const fromFn = vi.fn().mockReturnValue({ where: whereFn })
     mockDb.select.mockReturnValue({ from: fromFn })
@@ -41,9 +39,8 @@ describe('listEvents', () => {
   })
 })
 
-// ─── getEventById ─────────────────────────────────────────────────────────────
 describe('getEventById', () => {
-  it('retourne l\'événement si trouvé', async () => {
+  it("retourne l'événement si trouvé", async () => {
     mockDb.query.events.findFirst.mockResolvedValue(fakeEvent)
     const event = await getEventById('uuid-evt-1')
     expect(event.title).toBe('Exposition Photo')
@@ -55,7 +52,6 @@ describe('getEventById', () => {
   })
 })
 
-// ─── createEvent ──────────────────────────────────────────────────────────────
 describe('createEvent', () => {
   it('insère et retourne le nouvel événement', async () => {
     const returning = vi.fn().mockResolvedValue([fakeEvent])
@@ -74,9 +70,8 @@ describe('createEvent', () => {
   })
 })
 
-// ─── updateEvent ──────────────────────────────────────────────────────────────
 describe('updateEvent', () => {
-  it('met à jour et retourne l\'événement modifié', async () => {
+  it("met à jour et retourne l'événement modifié", async () => {
     mockDb.query.events.findFirst.mockResolvedValue(fakeEvent)
     const returning = vi.fn().mockResolvedValue([{ ...fakeEvent, title: 'Nouveau titre' }])
     const where = vi.fn().mockReturnValue({ returning })
@@ -87,15 +82,14 @@ describe('updateEvent', () => {
     expect(result.title).toBe('Nouveau titre')
   })
 
-  it('lève 404 si l\'événement n\'existe pas', async () => {
+  it("lève 404 si l'événement n'existe pas", async () => {
     mockDb.query.events.findFirst.mockResolvedValue(null)
     await expect(updateEvent('uuid-fantome', { title: 'X' })).rejects.toMatchObject({ statusCode: 404 })
   })
 })
 
-// ─── deleteEvent ──────────────────────────────────────────────────────────────
 describe('deleteEvent', () => {
-  it('supprime l\'événement sans erreur', async () => {
+  it("supprime l'événement sans erreur", async () => {
     mockDb.query.events.findFirst.mockResolvedValue(fakeEvent)
     const where = vi.fn().mockResolvedValue(undefined)
     mockDb.delete.mockReturnValue({ where })
@@ -103,7 +97,7 @@ describe('deleteEvent', () => {
     await expect(deleteEvent('uuid-evt-1')).resolves.toBeUndefined()
   })
 
-  it('lève 404 si l\'événement n\'existe pas', async () => {
+  it("lève 404 si l'événement n'existe pas", async () => {
     mockDb.query.events.findFirst.mockResolvedValue(null)
     await expect(deleteEvent('uuid-fantome')).rejects.toMatchObject({ statusCode: 404 })
   })

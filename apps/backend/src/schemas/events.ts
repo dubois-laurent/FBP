@@ -16,7 +16,7 @@ export const updateEventSchema = createEventSchema.partial()
 
 export const eventsQuerySchema = z.object({
   type: z.enum(eventTypeValues).optional(),
-  date: z.string().date().optional(), // YYYY-MM-DD
+  date: z.string().date().optional(),
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
 })

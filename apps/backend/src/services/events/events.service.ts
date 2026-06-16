@@ -47,25 +47,20 @@ export async function getEventById(id: string) {
 export async function createEvent(input: CreateEventInput) {
   const [event] = await db
     .insert(events)
-    .values({
-      ...input,
-      date: new Date(input.date),
-      availableSeats: input.totalSeats,
-    })
+    .values({ ...input, date: new Date(input.date), availableSeats: input.totalSeats })
     .returning()
   return event
 }
 
 export async function updateEvent(id: string, input: UpdateEventInput) {
-  await getEventById(id) // vérifie l'existence
+  await getEventById(id)
   const data: Record<string, unknown> = { ...input, updatedAt: new Date() }
   if (input.date) data.date = new Date(input.date)
-
   const [updated] = await db.update(events).set(data).where(eq(events.id, id)).returning()
   return updated
 }
 
 export async function deleteEvent(id: string) {
-  await getEventById(id) // vérifie l'existence
+  await getEventById(id)
   await db.delete(events).where(eq(events.id, id))
 }
