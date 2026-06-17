@@ -7,6 +7,7 @@ import {
 } from 'drizzle-orm/pg-core'
 import { relations } from 'drizzle-orm'
 import { bookings } from './bookings'
+import { messages } from './messages'
 
 // L'énumération pour le rôle d'utilisateur peut être soit "user" (utilisateur) soit "admin" (administrateur)
 export const roleEnum = pgEnum('role', ['user', 'admin'])
@@ -26,6 +27,8 @@ export const users = pgTable('users', {
 
 export const usersRelations = relations(users, ({ many }) => ({
   bookings: many(bookings),
+  sentMessages: many(messages, { relationName: 'sent_messages' }),
+  receivedMessages: many(messages, { relationName: 'received_messages' }),
 }))
 
 export type User = typeof users.$inferSelect
