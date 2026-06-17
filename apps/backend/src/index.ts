@@ -8,7 +8,9 @@ import authRouter from './routes/auth/auth.routes'
 import usersRouter from './routes/users/users.routes'
 import eventsRouter from './routes/events/events.routes'
 import bookingsRouter from './routes/bookings/bookings.routes'
+import messagesRouter from './routes/messages/messages.routes'
 import { errorHandler } from './middleware'
+import { initSocket } from './sockets/socket'
 
 const app: Express = express()
 const httpServer: Server = createServer(app)
@@ -27,9 +29,13 @@ app.use('/auth', authRouter)
 app.use('/users', usersRouter)
 app.use('/events', eventsRouter)
 app.use('/bookings', bookingsRouter)
+app.use('/messages', messagesRouter)
 
 // ERROR HANDLER
 app.use(errorHandler)
+
+// SOCKET.IO
+initSocket(httpServer)
 
 httpServer.listen(env.PORT, () => {
   console.log(`🚀 Server running on http://localhost:${env.PORT}`)
@@ -38,3 +44,4 @@ httpServer.listen(env.PORT, () => {
 })
 
 export { app, httpServer }
+

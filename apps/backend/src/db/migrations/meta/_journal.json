@@ -15,6 +15,13 @@
       "when": 1781603902376,
       "tag": "0001_short_the_leader",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1750118400000,
+      "tag": "0002_messages_table",
+      "breakpoints": true
     }
   ]
 }

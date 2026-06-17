@@ -3,7 +3,7 @@ import { updateUserSchema } from '../schemas/users'
 import { getUserById, updateUser } from '../services/users/users.service'
 import type { ApiResponse } from '../types'
 
-export async function getOneUser(req: Request, res: Response): Promise<void> {
+export async function getOneUser(req: Request, res: Response){
   const user = await getUserById(req.user!.id)
 
   // Exclure le password et le googleId de la réponse
@@ -13,7 +13,7 @@ export async function getOneUser(req: Request, res: Response): Promise<void> {
   res.json(response)
 }
 
-export async function putOneUser(req: Request, res: Response): Promise<void> {
+export async function putOneUser(req: Request, res: Response){
   const parsed = updateUserSchema.safeParse(req.body)
   if (!parsed.success) {
     res.status(400).json({ success: false, error: 'Données invalides', details: parsed.error.flatten() })

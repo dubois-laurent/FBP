@@ -4,7 +4,7 @@ import { registerSchema, loginSchema, refreshSchema } from '../schemas/auth'
 import { createUser, validateCredentials, findUserById } from '../services/auth/auth.service'
 import type { ApiResponse } from '../types'
 
-export async function register(req: Request, res: Response): Promise<void> {
+export async function register(req: Request, res: Response){
   const parsed = registerSchema.safeParse(req.body)
   if (!parsed.success) {
     res.status(400).json({ success: false, error: 'Données invalides', details: parsed.error.flatten() })
@@ -18,7 +18,7 @@ export async function register(req: Request, res: Response): Promise<void> {
   res.status(201).json(response)
 }
 
-export async function login(req: Request, res: Response): Promise<void> {
+export async function login(req: Request, res: Response){
   const parsed = loginSchema.safeParse(req.body)
   if (!parsed.success) {
     res.status(400).json({ success: false, error: 'Données invalides', details: parsed.error.flatten() })
@@ -34,7 +34,7 @@ export async function login(req: Request, res: Response): Promise<void> {
   }
 }
 
-export async function refresh(req: Request, res: Response): Promise<void> {
+export async function refresh(req: Request, res: Response){
   const parsed = refreshSchema.safeParse(req.body)
   if (!parsed.success) {
     res.status(400).json({ success: false, error: 'refreshToken manquant' })
