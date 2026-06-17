@@ -2,7 +2,9 @@ import 'dotenv/config'
 import express, { type Express } from 'express'
 import cors from 'cors'
 import { createServer, type Server } from 'http'
+import swaggerUi from 'swagger-ui-express'
 import { env } from './config/env'
+import swaggerSpec from './config/swagger'
 import passport from './config/passport'
 import authRouter from './routes/auth/auth.routes'
 import usersRouter from './routes/users/users.routes'
@@ -23,6 +25,10 @@ app.use(passport.initialize())
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })
 })
+
+// SWAGGER
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+app.get('/api/docs.json', (_req, res) => { res.json(swaggerSpec) })
 
 // ROUTES
 app.use('/auth', authRouter)
