@@ -13,15 +13,16 @@ import bookingsRouter from './routes/bookings/bookings.routes'
 import messagesRouter from './routes/messages/messages.routes'
 import { errorHandler } from './middleware'
 import { initSocket } from './sockets/socket'
+import helmet from 'helmet'
 
 const app: Express = express()
 const httpServer: Server = createServer(app)
 
 app.use(cors({ origin: env.FRONTEND_URL, credentials: true }))
+app.use(helmet())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(passport.initialize())
-
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() })
 })

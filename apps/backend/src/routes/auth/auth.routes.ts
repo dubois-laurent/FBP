@@ -1,10 +1,19 @@
 import { Router } from 'express'
+import { rateLimit } from 'express-rate-limit'
 import passport from '../../config/passport'
 import { register, login, refresh, logout } from '../../controllers/auth.controller'
 import { googleCallback, googleFailure } from '../../controllers/google.controller'
 import { asyncHandler } from '../../lib/asyncHandler'
 
 const router: Router = Router()
+
+const authLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, error: 'Trop de tentatives, réessayez dans 5 minutes.' },
+})
 
 /**
  * @swagger
@@ -59,7 +68,7 @@ const router: Router = Router()
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/register', asyncHandler(register))
+router.post('/register', authLimiter, asyncHandler(register))
 
 /**
  * @swagger
@@ -109,7 +118,7 @@ router.post('/register', asyncHandler(register))
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/login', asyncHandler(login))
+router.post('/login', authLimiter, asyncHandler(login))
 
 /**
  * @swagger

@@ -29,12 +29,12 @@ export async function validateCredentials(
   const user = await db.query.users.findFirst({ where: eq(users.email, input.email) })
 
   if (!user || !user.password) {
-    throw new Error('Email ou mot de passe incorrect')
+    throw AppError.unauthorized('Email ou mot de passe incorrect')
   }
 
   const valid = await bcrypt.compare(input.password, user.password)
   if (!valid) {
-    throw new Error('Email ou mot de passe incorrect')
+    throw AppError.unauthorized('Email ou mot de passe incorrect')
   }
 
   return { id: user.id, name: user.name, email: user.email, role: user.role }
@@ -70,6 +70,6 @@ export async function findOrCreateGoogleUser(profile: {
 
 export async function findUserById(id: string) {
   const user = await db.query.users.findFirst({ where: eq(users.id, id) })
-  if (!user) throw new Error('Utilisateur introuvable')
+  if (!user) throw AppError.notFound('Utilisateur introuvable')
   return user
 }

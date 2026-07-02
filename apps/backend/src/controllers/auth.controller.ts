@@ -24,14 +24,10 @@ export async function login(req: Request, res: Response){
     res.status(400).json({ success: false, error: 'Données invalides', details: parsed.error.flatten() })
     return
   }
-  try {
-    const user = await validateCredentials(parsed.data)
-    const accessToken = signAccessToken({ sub: user.id, email: user.email, role: user.role })
-    const refreshToken = signRefreshToken(user.id)
-    res.json({ success: true, data: { user, accessToken, refreshToken } })
-  } catch {
-    res.status(401).json({ success: false, error: 'Email ou mot de passe incorrect' })
-  }
+  const user = await validateCredentials(parsed.data)
+  const accessToken = signAccessToken({ sub: user.id, email: user.email, role: user.role })
+  const refreshToken = signRefreshToken(user.id)
+  res.json({ success: true, data: { user, accessToken, refreshToken } })
 }
 
 export async function refresh(req: Request, res: Response){
@@ -47,14 +43,10 @@ export async function refresh(req: Request, res: Response){
     res.status(401).json({ success: false, error: 'Refresh token invalide ou expiré' })
     return
   }
-  try {
-    const user = await findUserById(payload.sub)
-    const accessToken = signAccessToken({ sub: user.id, email: user.email, role: user.role })
-    const refreshToken = signRefreshToken(user.id)
-    res.json({ success: true, data: { accessToken, refreshToken } })
-  } catch {
-    res.status(401).json({ success: false, error: 'Utilisateur introuvable' })
-  }
+  const user = await findUserById(payload.sub)
+  const accessToken = signAccessToken({ sub: user.id, email: user.email, role: user.role })
+  const refreshToken = signRefreshToken(user.id)
+  res.json({ success: true, data: { accessToken, refreshToken } })
 }
 
 export function logout(_req: Request, res: Response): void {
