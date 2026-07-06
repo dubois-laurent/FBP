@@ -1,7 +1,13 @@
 # Festival Booking Platform — FBP
 
-Plateforme complète de gestion et réservation d'événements pour festivals de photographie.  
-Projet réalisé dans le cadre du cours **HETIC Web2**.
+Plateforme complète de gestion et réservation d'événements pour festivals de photographie fictif.  
+Projet réalisé dans le cadre de mon rattrapage de plusieurs modules. 
+
+L'IA a été utilisé principalement pour gagner du temps. Je me suis permit de reprendre plusieurs stacks du projet CineConnect afin de faire un rattrapage global par rapport à ce projet fil rouge du début d'année.
+
+N'hésitez pas à me questionner si besoin,
+
+Laurent
 
 ---
 
