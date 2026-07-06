@@ -14,6 +14,7 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as BookingsRouteImport } from './routes/bookings'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MessagesIndexRouteImport } from './routes/messages/index'
 import { Route as EventsIndexRouteImport } from './routes/events/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as MessagesUserIdRouteImport } from './routes/messages/$userId'
@@ -43,6 +44,11 @@ const BookingsRoute = BookingsRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MessagesIndexRoute = MessagesIndexRouteImport.update({
+  id: '/messages/',
+  path: '/messages/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EventsIndexRoute = EventsIndexRouteImport.update({
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/messages/$userId': typeof MessagesUserIdRoute
   '/admin/': typeof AdminIndexRoute
   '/events/': typeof EventsIndexRoute
+  '/messages/': typeof MessagesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/messages/$userId': typeof MessagesUserIdRoute
   '/admin': typeof AdminIndexRoute
   '/events': typeof EventsIndexRoute
+  '/messages': typeof MessagesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   '/messages/$userId': typeof MessagesUserIdRoute
   '/admin/': typeof AdminIndexRoute
   '/events/': typeof EventsIndexRoute
+  '/messages/': typeof MessagesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
     | '/messages/$userId'
     | '/admin/'
     | '/events/'
+    | '/messages/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
     | '/messages/$userId'
     | '/admin'
     | '/events'
+    | '/messages'
   id:
     | '__root__'
     | '/'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '/messages/$userId'
     | '/admin/'
     | '/events/'
+    | '/messages/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -158,6 +170,7 @@ export interface RootRouteChildren {
   MessagesUserIdRoute: typeof MessagesUserIdRoute
   AdminIndexRoute: typeof AdminIndexRoute
   EventsIndexRoute: typeof EventsIndexRoute
+  MessagesIndexRoute: typeof MessagesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -195,6 +208,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/messages/': {
+      id: '/messages/'
+      path: '/messages'
+      fullPath: '/messages/'
+      preLoaderRoute: typeof MessagesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/events/': {
@@ -246,6 +266,7 @@ const rootRouteChildren: RootRouteChildren = {
   MessagesUserIdRoute: MessagesUserIdRoute,
   AdminIndexRoute: AdminIndexRoute,
   EventsIndexRoute: EventsIndexRoute,
+  MessagesIndexRoute: MessagesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

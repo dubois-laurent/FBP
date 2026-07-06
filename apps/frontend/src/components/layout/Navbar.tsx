@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useRouter } from '@tanstack/react-router'
-import { CalendarDays, Ticket, User, LogOut, Menu, X } from 'lucide-react'
+import { CalendarDays, Ticket, User, LogOut, Menu, X, MessageSquare } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { useAuthStore, selectIsAuthenticated, selectIsAdmin } from '@/store/auth.store'
@@ -26,6 +26,7 @@ export function Navbar() {
     ...(isAuthenticated
       ? [
           { to: '/bookings', label: 'Mes réservations', icon: Ticket },
+          { to: '/messages', label: 'Messages', icon: MessageSquare },
           { to: '/profile', label: 'Profil', icon: User },
           ...(isAdmin ? [{ to: '/admin', label: 'Admin', icon: null }] : []),
         ]
