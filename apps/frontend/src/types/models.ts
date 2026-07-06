@@ -56,3 +56,11 @@ export interface UpdateProfilePayload {
   email?: string
   password?: string
 }
+
+export interface Message {
+  id: string
+  senderId: string
+  receiverId: string
+  content: string
+  createdAt: string
+}
