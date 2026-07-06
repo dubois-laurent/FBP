@@ -12,14 +12,26 @@ const loginSchema = z.object({
   password: z.string().min(1, 'Mot de passe requis'),
 })
 
+const searchSchema = z.object({
+  error: z.string().optional(),
+  redirect: z.string().optional(),
+})
+
 type LoginForm = z.infer<typeof loginSchema>
 
 export const Route = createFileRoute('/login')({
+  validateSearch: searchSchema,
   component: LoginPage,
 })
 
+const GOOGLE_ERROR_MESSAGES: Record<string, string> = {
+  google_auth_failed: 'La connexion Google a échoué. Réessayez.',
+  auth_failed: 'Authentification échouée. Réessayez.',
+}
+
 function LoginPage() {
   const navigate = useNavigate()
+  const { error: searchError, redirect } = Route.useSearch()
   const { mutate: login, isPending, error } = useLogin()
 
   const {
@@ -30,7 +42,7 @@ function LoginPage() {
 
   function onSubmit(data: LoginForm) {
     login(data, {
-      onSuccess: () => navigate({ to: '/' }),
+      onSuccess: () => void navigate({ to: (redirect as '/') ?? '/' }),
     })
   }
 
@@ -72,9 +84,11 @@ function LoginPage() {
             )}
           </div>
 
-          {error && (
+          {(error || searchError) && (
             <p className="text-sm text-red-600 text-center">
-              Identifiants invalides. Veuillez réessayer.
+              {searchError
+                ? (GOOGLE_ERROR_MESSAGES[searchError] ?? 'Une erreur est survenue.')
+                : 'Identifiants invalides. Veuillez réessayer.'}
             </p>
           )}
 

@@ -18,6 +18,7 @@ import { Route as EventsIndexRouteImport } from './routes/events/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as MessagesUserIdRouteImport } from './routes/messages/$userId'
 import { Route as EventsIdRouteImport } from './routes/events/$id'
+import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -64,6 +65,11 @@ const EventsIdRoute = EventsIdRouteImport.update({
   path: '/events/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/events/$id': typeof EventsIdRoute
   '/messages/$userId': typeof MessagesUserIdRoute
   '/admin/': typeof AdminIndexRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/events/$id': typeof EventsIdRoute
   '/messages/$userId': typeof MessagesUserIdRoute
   '/admin': typeof AdminIndexRoute
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/events/$id': typeof EventsIdRoute
   '/messages/$userId': typeof MessagesUserIdRoute
   '/admin/': typeof AdminIndexRoute
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/profile'
     | '/register'
+    | '/auth/callback'
     | '/events/$id'
     | '/messages/$userId'
     | '/admin/'
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/profile'
     | '/register'
+    | '/auth/callback'
     | '/events/$id'
     | '/messages/$userId'
     | '/admin'
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/profile'
     | '/register'
+    | '/auth/callback'
     | '/events/$id'
     | '/messages/$userId'
     | '/admin/'
@@ -141,6 +153,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
   EventsIdRoute: typeof EventsIdRoute
   MessagesUserIdRoute: typeof MessagesUserIdRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -212,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -221,6 +241,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
   EventsIdRoute: EventsIdRoute,
   MessagesUserIdRoute: MessagesUserIdRoute,
   AdminIndexRoute: AdminIndexRoute,
