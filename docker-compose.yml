@@ -20,29 +20,27 @@ services:
 
   backend:
     build:
-      context: ./packages/backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/backend/Dockerfile
     container_name: fpb_backend
     restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
+    env_file:
+      - ./apps/backend/.env
     environment:
       NODE_ENV: development
       PORT: 3000
       DATABASE_URL: postgresql://${POSTGRES_USER:-fpb_user}:${POSTGRES_PASSWORD:-fpb_password}@db:5432/${POSTGRES_DB:-fpb_db}
-      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET}
-      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
       JWT_ACCESS_EXPIRES_IN: 15m
       JWT_REFRESH_EXPIRES_IN: 7d
-      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       GOOGLE_CALLBACK_URL: ${GOOGLE_CALLBACK_URL:-http://localhost:3000/auth/google/callback}
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173}
     ports:
       - "3000:3000"
     volumes:
-      - ./packages/backend/src:/app/src
+      - ./apps/backend/src:/app/apps/backend/src
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://localhost:3000/health || exit 1"]
       interval: 15s
@@ -52,8 +50,8 @@ services:
 
   frontend:
     build:
-      context: ./packages/frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/frontend/Dockerfile
     container_name: fpb_frontend
     restart: unless-stopped
     depends_on:
@@ -64,7 +62,7 @@ services:
     ports:
       - "5173:5173"
     volumes:
-      - ./packages/frontend/src:/app/src
+      - ./apps/frontend/src:/app/apps/frontend/src
 
 volumes:
   postgres_data:
