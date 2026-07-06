@@ -16,10 +16,11 @@ Projet réalisé dans le cadre du cours **HETIC Web2**.
 7. [Variables d'environnement](#variables-denvironnement)
 8. [API Reference](#api-reference)
 9. [Frontend — Routes & Pages](#frontend--routes--pages)
-10. [Tests](#tests)
-11. [CI/CD](#cicd)
-12. [Docker](#docker)
-13. [Comptes de démonstration](#comptes-de-démonstration)
+10. [Design — Paper](#design--paper)
+11. [Tests](#tests)
+12. [CI/CD](#cicd)
+13. [Docker](#docker)
+14. [Comptes de démonstration](#comptes-de-démonstration)
 
 ---
 
@@ -398,6 +399,39 @@ const isAdmin = useAuthStore(selectIsAdmin)
 ```
 
 L'état est persisté dans `localStorage` (clé `fbp-auth`). Le refresh token est géré automatiquement par l'intercepteur Axios : en cas d'erreur 401, la requête est mise en attente, le token est rafraîchi, puis toutes les requêtes en attente sont rejouées.
+
+---
+
+## Design — Paper
+
+L'ensemble du design de l'interface frontend a été réalisé avec **[Paper](https://paper.design/)**, un outil de design professionnel intégré à VS Code permettant de composer des interfaces sur un canvas 2D et d'en exporter directement le code JSX.
+
+### Workflow
+
+1. **Maquettage** — Les pages (accueil, liste d'événements, détail, réservations, admin, messagerie) ont été conçues directement dans Paper avant toute implémentation.
+2. **Export JSX** — Les composants ont été exportés depuis Paper vers `apps/frontend/src/components/` et `apps/frontend/src/routes/`, puis intégrés avec TanStack Router et TanStack Query.
+3. **Design system** — La palette de couleurs et la typographie définies dans Paper ont été transposées dans le fichier CSS global via les custom properties Tailwind v4 (`@theme {}`).
+
+### Système de design
+
+| Token | Valeur | Usage |
+|---|---|---|
+| `--color-cobalt` | `#0d2d8a` | Couleur principale (CTA, liens, Navbar) |
+| `--color-cobalt-dark` | `#0a2270` | Hover sur les éléments cobalt |
+| `--color-ink` | `#0a0a0a` | Texte principal |
+| `--color-canvas` | `#ffffff` | Fond des pages |
+| `--color-surface` | `#f5f4f1` | Fond des cartes et sections |
+| `--font-sans` | `Inter` | Corps de texte, UI |
+| `--font-serif` | `DM Serif Display` | Titres éditoriaux (hero, 404) |
+
+### Composants UI générés
+
+- **Button** — variantes `primary`, `outline`, `destructive`, support `asChild`
+- **Input** — champ de formulaire avec label intégré
+- **Badge** — variantes `default`, `outline`, `success`, `destructive`
+- **Card** — conteneur avec image, titre, métadonnées
+- **Dialog** — modal Radix UI (création/édition/suppression d'événements)
+- **Navbar** — navigation responsive avec liens contextuels selon le rôle
 
 ---
 
