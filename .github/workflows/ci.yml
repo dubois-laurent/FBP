@@ -10,37 +10,58 @@ defaults:
   run:
     shell: bash
 
+env:
+  NODE_VERSION: "24"
+
+# ── LINT ──────────────────────────────────────────────────────────────────────
+
 jobs:
-  backend:
-    name: Backend — typecheck & tests
+  lint-backend:
+    name: "lint: backend"
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
+      - run: pnpm install --frozen-lockfile
       - name: Typecheck
         run: pnpm --filter backend exec tsc --noEmit --project tsconfig.json
 
+  lint-frontend:
+    name: "lint: frontend"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Typecheck
+        run: pnpm --filter frontend exec tsc --noEmit
+
+# ── TEST ──────────────────────────────────────────────────────────────────────
+
+  test-backend:
+    name: "test: backend"
+    runs-on: ubuntu-latest
+    needs: [lint-backend]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
       - name: Run tests
         run: pnpm --filter backend test
         env:
           NODE_ENV: test
-          # Ce sont des fausses variables pour valider le schéma Zod (DB est mockée dans les tests)
           DATABASE_URL: postgresql://test:test@localhost:5432/fbp_test
           JWT_ACCESS_SECRET: test_access_secret_min_32_characters_long
           JWT_REFRESH_SECRET: test_refresh_secret_min_32_characters_long
@@ -49,30 +70,40 @@ jobs:
           GOOGLE_CALLBACK_URL: http://localhost:3000/auth/google/callback
           FRONTEND_URL: http://localhost:5173
 
-  frontend:
-    name: Frontend — typecheck & tests
+  test-frontend:
+    name: "test: frontend"
     runs-on: ubuntu-latest
-
+    needs: [lint-frontend]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Typecheck
-        run: pnpm --filter frontend exec tsc --noEmit
-
+      - run: pnpm install --frozen-lockfile
       - name: Run tests
         run: pnpm --filter frontend test
+
+# ── BUILD ─────────────────────────────────────────────────────────────────────
+
+  build:
+    name: "build: frontend"
+    runs-on: ubuntu-latest
+    needs: [test-backend, test-frontend]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build frontend
+        run: pnpm --filter frontend exec vite build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: apps/frontend/dist
+          retention-days: 7
