@@ -6,7 +6,7 @@ export interface Event {
   title: string
   description: string
   type: EventType
-  location: string
+  venue: string
   date: string
   totalSeats: number
   availableSeats: number
@@ -32,7 +32,7 @@ export interface CreateEventPayload {
   title: string
   description: string
   type: EventType
-  location: string
+  venue: string
   date: string
   totalSeats: number
   imageUrl?: string

@@ -40,7 +40,7 @@ const eventSchema = z.object({
   title: z.string().min(1, 'Titre requis'),
   description: z.string().min(1, 'Description requise'),
   type: z.enum(['exposition', 'conference', 'atelier', 'rencontre']),
-  location: z.string().min(1, 'Lieu requis'),
+  venue: z.string().min(1, 'Lieu requis'),
   date: z.string().min(1, 'Date requise'),
   totalSeats: z.number().int().positive('Nombre de places invalide'),
   imageUrl: z.string().optional(),
@@ -58,7 +58,7 @@ const FORM_DEFAULTS: EventFormData = {
   title: '',
   description: '',
   type: 'exposition',
-  location: '',
+  venue: '',
   date: '',
   totalSeats: 50,
   imageUrl: '',
@@ -98,7 +98,7 @@ function AdminPage() {
       title: event.title,
       description: event.description,
       type: event.type,
-      location: event.location,
+      venue: event.venue,
       date: isoToDatetimeLocal(event.date),
       totalSeats: event.totalSeats,
       imageUrl: event.imageUrl ?? '',
@@ -122,7 +122,7 @@ function AdminPage() {
       title: formData.title,
       description: formData.description,
       type: formData.type,
-      location: formData.location,
+      venue: formData.venue,
       date: new Date(formData.date).toISOString(),
       totalSeats: formData.totalSeats,
       imageUrl: formData.imageUrl || undefined,
@@ -303,8 +303,8 @@ function AdminPage() {
             </div>
 
             <div>
-              <Label htmlFor="adm-location">Lieu</Label>
-              <Input id="adm-location" {...form.register('location')} className="mt-1" />
+              <Label htmlFor="adm-venue">Lieu</Label>
+              <Input id="adm-venue" {...form.register('venue')} className="mt-1" />
             </div>
 
             <div>

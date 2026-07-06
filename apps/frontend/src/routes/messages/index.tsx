@@ -67,7 +67,7 @@ function MessagesIndexPage() {
           Contactez notre équipe pour toute question concernant un événement ou une réservation.
         </p>
         <Button onClick={() => openConversation(SUPPORT_USER_ID)}>
-          Contacter le support
+          Contactez moi
         </Button>
       </div>
     </Layout>

@@ -124,7 +124,7 @@ function EventsPage() {
                     </span>
                     <span className="flex items-center gap-1.5">
                       <MapPin className="w-3 h-3" />
-                      {event.location}
+                      {event.venue}
                     </span>
                     <span className="flex items-center gap-1.5">
                       <Users className="w-3 h-3" />

@@ -68,7 +68,7 @@ function BookingsPage() {
                     </span>
                     <span className="flex items-center gap-1">
                       <MapPin className="w-3 h-3" />
-                      {booking.event.location}
+                      {booking.event.venue}
                     </span>
                   </div>
                 </div>
