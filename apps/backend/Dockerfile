@@ -17,4 +17,4 @@ COPY apps/backend/ ./apps/backend/
 
 WORKDIR /app/apps/backend
 EXPOSE 3000
-CMD ["pnpm", "dev"]
+CMD ["sh", "-c", "pnpm db:migrate && pnpm dev"]

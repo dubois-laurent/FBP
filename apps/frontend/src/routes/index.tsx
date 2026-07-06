@@ -28,7 +28,7 @@ function HomePage() {
 
         <div className="relative max-w-4xl">
           <p className="text-xs tracking-[0.3em] uppercase text-canvas/50 mb-6">
-            Festival International — Arles, 2026
+            Festival International Photo Lens de Paris, 2026
           </p>
           <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-canvas leading-[1.05] mb-8">
             La photographie<br />

@@ -20,6 +20,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
+      '/socket.io': {
+        target: process.env['BACKEND_URL'] ?? 'http://localhost:3000',
+        changeOrigin: true,
+        ws: true,
+      },
     },
   },
 })

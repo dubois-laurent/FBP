@@ -38,7 +38,7 @@ export function Navbar() {
       <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="font-serif text-xl text-ink hover:text-cobalt transition-colors">
-          FestivalPhoto
+          Photo Lens
         </Link>
 
         {/* Desktop nav */}

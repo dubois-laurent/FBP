@@ -40,7 +40,7 @@ function RegisterPage() {
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <Link to="/" className="font-serif text-2xl text-ink">
-            FestivalPhoto
+            Photo Lens
           </Link>
           <p className="mt-2 text-sm text-muted">Créez votre compte</p>
         </div>
