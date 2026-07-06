@@ -20,6 +20,7 @@ vi.mock('../config/db', () => ({
       users: { findFirst: vi.fn() },
       events: { findFirst: vi.fn(), findMany: vi.fn() },
       bookings: { findFirst: vi.fn(), findMany: vi.fn() },
+      messages: { findMany: vi.fn() },
     },
     insert: vi.fn(),
     update: vi.fn(),
