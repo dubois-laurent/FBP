@@ -1,0 +1,10 @@
+C:\Users\pc_ce\Desktop\dotnet_react\FBP\apps\backend-dotnet\FBP.Api\bin\Debug\net45\FBP.Api.dll
+C:\Users\pc_ce\Desktop\dotnet_react\FBP\apps\backend-dotnet\FBP.Api\bin\Debug\net45\FBP.Api.pdb
+C:\Users\pc_ce\Desktop\dotnet_react\FBP\apps\backend-dotnet\FBP.Api\obj\Debug\net45\FBP.Api.csproj.AssemblyReference.cache
+C:\Users\pc_ce\Desktop\dotnet_react\FBP\apps\backend-dotnet\FBP.Api\obj\Debug\net45\FBP.Api.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\pc_ce\Desktop\dotnet_react\FBP\apps\backend-dotnet\FBP.Api\obj\Debug\net45\FBP.Api.AssemblyInfoInputs.cache
+C:\Users\pc_ce\Desktop\dotnet_react\FBP\apps\backend-dotnet\FBP.Api\obj\Debug\net45\FBP.Api.AssemblyInfo.cs
+C:\Users\pc_ce\Desktop\dotnet_react\FBP\apps\backend-dotnet\FBP.Api\obj\Debug\net45\FBP.Api.csproj.CoreCompileInputs.cache
+C:\Users\pc_ce\Desktop\dotnet_react\FBP\apps\backend-dotnet\FBP.Api\obj\Debug\net45\FBP.Api.sourcelink.json
+C:\Users\pc_ce\Desktop\dotnet_react\FBP\apps\backend-dotnet\FBP.Api\obj\Debug\net45\FBP.Api.dll
+C:\Users\pc_ce\Desktop\dotnet_react\FBP\apps\backend-dotnet\FBP.Api\obj\Debug\net45\FBP.Api.pdb

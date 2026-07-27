@@ -1,0 +1,8 @@
+is_global = true
+build_property.RootNamespace = FBP.Api
+build_property.ProjectDir = C:\Users\pc_ce\Desktop\dotnet_react\FBP\apps\backend-dotnet\FBP.Api\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.CsWinRTUseWindowsUIXamlProjections = false
+build_property.EffectiveAnalysisLevelStyle = 
+build_property.EnableCodeStyleSeverity = 
